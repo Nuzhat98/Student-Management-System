@@ -36,4 +36,9 @@ public class StudentController {
     public StudentDtos findStudentById(@PathVariable("studentId") Long studentId){
         return studentService.findStudentById(studentId);
     }
+
+    @GetMapping("/find-student-by-course/{courseId}")
+    public List<StudentDtos> findStudentByCourse(@PathVariable("courseId") String courseId){
+        return studentService.findStudentByCourse(courseId);
+    }
 }

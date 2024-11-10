@@ -53,6 +53,16 @@ public class CourseServiceImpl implements CourseService {
         return convertEntityToDto(newCourseEntity);
     }
 
+    @Override
+    public List<String> findCourseByStudentId(Long studentId) {
+        StudentEntity newStudentEntity = studentRepository.findById(studentId).orElseThrow(()->new RuntimeException("Student Id not found"));
+        List<CourseEntity> newCourseEntity= newStudentEntity.getStudentsTakenCourses();
+        return newCourseEntity.stream().map(eachCourse->{
+            return eachCourse.getCourseId().toString()+" : "+eachCourse.getCourseName().toString();
+        }).toList();
+
+    }
+
     public CourseDtos convertEntityToDto(CourseEntity courseEntity){
         CourseDtos newCourseDto = new CourseDtos();
         newCourseDto.setCourseId(courseEntity.getCourseId());

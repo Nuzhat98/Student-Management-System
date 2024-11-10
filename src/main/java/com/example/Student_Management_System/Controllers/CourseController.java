@@ -40,6 +40,10 @@ public class CourseController {
     @GetMapping("/find-course/{courseId}")
     public CourseDtos findCourseById(@PathVariable("courseId") String courseId){
         return courseService.findCourseById(courseId);
+    }
 
+    @GetMapping("/find-course-by-student/{studentId}")
+    public List<String> findCourseByStudentId(@PathVariable("studentId") Long studentId){
+        return courseService.findCourseByStudentId(studentId);
     }
 }

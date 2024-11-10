@@ -14,4 +14,6 @@ public interface CourseService {
     List<CourseEntity> addMultipleCourses(List<CourseDtos> courseDtos);
 
     CourseDtos findCourseById(String courseId);
+
+    List<String> findCourseByStudentId(Long studentId);
 }
