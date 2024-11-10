@@ -23,12 +23,17 @@ public class StudentController {
     }
 
     @PostMapping("/add-student")
-    public StudentEntity addStudent(@RequestBody StudentDtos studentDtos){
+    public StudentDtos addStudent(@RequestBody StudentDtos studentDtos){
         return studentService.addStudent(studentDtos);
     }
 
     @DeleteMapping("/delete-student/{studentId}")
     public void deleteStudentById(@PathVariable("studentId") Long studentId){
          studentService.deleteStudentById(studentId);
+    }
+
+    @GetMapping("/find-student/{studentId}")
+    public StudentDtos findStudentById(@PathVariable("studentId") Long studentId){
+        return studentService.findStudentById(studentId);
     }
 }

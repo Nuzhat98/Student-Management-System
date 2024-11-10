@@ -1,5 +1,6 @@
 package com.example.Student_Management_System.Services;
 
+
 import com.example.Student_Management_System.DTOS.CourseDtos;
 import com.example.Student_Management_System.DTOS.StudentDtos;
 import com.example.Student_Management_System.Entities.CourseEntity;
@@ -9,7 +10,7 @@ import com.example.Student_Management_System.Repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -29,13 +30,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseEntity addStudentToCourse(Long studentId, String courseId) {
+    public void addStudentToCourse(Long studentId, String courseId) {
       CourseEntity courseEntity = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not Found"));
       StudentEntity studentEntity= studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student Id not found"));
       courseEntity.getCourseTakenByStudents().add(studentEntity);
       studentEntity.getStudentsTakenCourses().add(courseEntity);
       studentRepository.save(studentEntity);
-      return courseRepository.save(courseEntity);
+      courseRepository.save(courseEntity);
     }
 
     @Override
@@ -44,5 +45,25 @@ public class CourseServiceImpl implements CourseService {
             CourseEntity newCourseEntity = CourseEntity.builder().courseId(addCourses.getCourseId()).courseName(addCourses.getCourseName()).build();
            return courseRepository.save(newCourseEntity);
        }).toList();
+    }
+
+    @Override
+    public CourseDtos findCourseById(String courseId) {
+        CourseEntity newCourseEntity=courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course Id not found"));
+        return convertEntityToDto(newCourseEntity);
+    }
+
+    public CourseDtos convertEntityToDto(CourseEntity courseEntity){
+        CourseDtos newCourseDto = new CourseDtos();
+        newCourseDto.setCourseId(courseEntity.getCourseId());
+        newCourseDto.setCourseName(courseEntity.getCourseName());
+
+        List<String> students = courseEntity.getCourseTakenByStudents().stream().map(studentEntity -> {
+            return studentEntity.getStudentId().toString()+" "+studentEntity.getStudentName();
+        }).toList();
+
+        newCourseDto.setCourseTakenByStudents(students);
+
+        return newCourseDto;
     }
 }

@@ -36,4 +36,10 @@ public class CourseController {
          courseService.addStudentToCourse(studentId, courseId);
          return studentId+" added to "+courseId+" successfully!";
     }
+
+    @GetMapping("/find-course/{courseId}")
+    public CourseDtos findCourseById(@PathVariable("courseId") String courseId){
+        return courseService.findCourseById(courseId);
+
+    }
 }

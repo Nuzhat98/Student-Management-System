@@ -17,5 +17,6 @@ public class CourseDtos {
     @Id
     private String courseId;
     private String courseName;
-    private List<StudentEntity> courseTakenByStudents;
+    private List<String> courseTakenByStudents;
+
 }

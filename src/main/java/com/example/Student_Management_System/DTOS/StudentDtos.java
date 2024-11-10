@@ -17,11 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class StudentDtos {
-//    @Id
+    @Id
 //    @GeneratedValue(generator = "sixDigitIdGenerator")
 //    @GenericGenerator(name = "sixDigitIdGenerator", strategy = "com.example.Student_Management_System.ID.SixDigitIdGenerator")
-//    private Long studentId;
+    private Long studentId;
     private String studentName;
     private String studentDept;
-   private List<CourseEntity> studentCourses;
+   private List<String> studentCourses;
+
+
 }
