@@ -1,13 +1,12 @@
 package com.example.Student_Management_System.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +19,14 @@ public class CourseEntity {
     @Id
     private String courseId;
     private String courseName;
-    private List<StudentEntity> courseTakenByStudents;
+
+    @ManyToMany
+    @JoinTable(
+      name = "course-student",
+            joinColumns = @JoinColumn(name="courseId"),
+            inverseJoinColumns = @JoinColumn(name = "studentId")
+    )
+    private List<StudentEntity> courseTakenByStudents = new ArrayList<>();
 
     public CourseEntity(String courseId, String courseName) {
     }

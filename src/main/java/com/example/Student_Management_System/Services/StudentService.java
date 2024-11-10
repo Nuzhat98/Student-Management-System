@@ -6,4 +6,5 @@ import com.example.Student_Management_System.Entities.StudentEntity;
 public interface StudentService {
      StudentEntity addStudent(StudentDtos studentDtos);
 
+    void deleteStudentById(Long studentId);
 }

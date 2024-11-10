@@ -24,23 +24,25 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseEntity addCourse(CourseDtos courseDtos) {
-        CourseEntity newCourseEntity = new CourseEntity(courseDtos.getCourseId(),courseDtos.getCourseName());
+        CourseEntity newCourseEntity = CourseEntity.builder().courseId(courseDtos.getCourseId()).courseName(courseDtos.getCourseName()).build();
         return courseRepository.save(newCourseEntity);
     }
 
     @Override
-    public CourseEntity addStudent(StudentDtos studentDtos, String courseId) {
-        Optional<CourseEntity> courseEntityOp= courseRepository.findById(courseId);
-        if(courseEntityOp.isPresent()){
-            CourseEntity courseEntity = courseEntityOp.get();
-            courseEntity.setCourseTakenByStudents((List<StudentEntity>) studentDtos);
-            studentRepository.findById(studentDtos.getStudentId()).map(existingStudent ->{
-                existingStudent.setStudentsTakenCourses((List<CourseEntity>) courseEntity);
-                return null;
-            });
-            return courseRepository.save(courseEntity);
-        }else{
-            throw new RuntimeException("Course Id not found");
-        }
+    public CourseEntity addStudentToCourse(Long studentId, String courseId) {
+      CourseEntity courseEntity = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not Found"));
+      StudentEntity studentEntity= studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student Id not found"));
+      courseEntity.getCourseTakenByStudents().add(studentEntity);
+      studentEntity.getStudentsTakenCourses().add(courseEntity);
+      studentRepository.save(studentEntity);
+      return courseRepository.save(courseEntity);
+    }
+
+    @Override
+    public List<CourseEntity> addMultipleCourses(List<CourseDtos> courseDtos) {
+       return courseDtos.stream().map(addCourses ->{
+            CourseEntity newCourseEntity = CourseEntity.builder().courseId(addCourses.getCourseId()).courseName(addCourses.getCourseName()).build();
+           return courseRepository.save(newCourseEntity);
+       }).toList();
     }
 }

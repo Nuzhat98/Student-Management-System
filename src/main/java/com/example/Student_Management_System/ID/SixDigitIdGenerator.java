@@ -10,7 +10,7 @@ public class SixDigitIdGenerator implements IdentifierGenerator {
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object obj) {
         Random random = new Random();
-        int id = 100000 + random.nextInt(900000); // Generates a random 6-digit number
+        Long id = 100000 + random.nextLong(900000); // Generates a random 6-digit number
         return id;
     }
 }

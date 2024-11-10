@@ -17,7 +17,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentEntity addStudent(StudentDtos studentDtos) {
-        StudentEntity newStudentEntity = new StudentEntity(studentDtos.getStudentId(),studentDtos.getStudentName(),studentDtos.getStudentDept());
+        StudentEntity newStudentEntity = StudentEntity.builder().studentName(studentDtos.getStudentName()).studentDept(studentDtos.getStudentDept()).build();
         return studentRepository.save(newStudentEntity);
+    }
+
+    @Override
+    public void deleteStudentById(Long studentId) {
+        studentRepository.deleteById(studentId);
     }
 }

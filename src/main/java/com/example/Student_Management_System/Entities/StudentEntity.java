@@ -1,15 +1,13 @@
 package com.example.Student_Management_System.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,5 +23,12 @@ public class StudentEntity {
     private Long studentId;
     private String studentName;
     private String studentDept;
-    private List<CourseEntity> studentsTakenCourses;
+    @ManyToMany(mappedBy = "courseTakenByStudents")
+    private List<CourseEntity> studentsTakenCourses=new ArrayList<>();
+
+    public StudentEntity(Long studentId, String studentName, String studentDept) {
+    }
+
+    public StudentEntity(String studentName, String studentDept) {
+    }
 }
